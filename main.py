@@ -88,8 +88,6 @@ class NumberGUI:
             img = resize_img(list_to_sparse_matrix(self.canvas.coords_list))
             preds = self.model.predict(img)[0].tolist()
             preds_dict = {i: j for i, j in enumerate(preds)}
-            #max_val = max(preds_dict, key=preds_dict.get)
-            #print(f"Prediction: {max_val} Confidence: {round(preds_dict[max_val] * 100, 2)}%")
             self.plot.update_plot(preds_dict.values())
 
     def popup(self, msg):
