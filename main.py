@@ -10,7 +10,7 @@ class NumberGUI:
 
     def __init__(self, master, model):
         self.master = master
-        self.master.geometry("800x400")
+        self.master.geometry("750x380")
         self.master.resizable(False, False)
         self.master.title("MNIST Predictor")
         self.model = model
@@ -36,8 +36,8 @@ class NumberGUI:
         self.canvas.old_coords = None
         self.canvas.coords_list = []
 
-        self.message = tk.Label(self.master, text="Input number by clicking and dragging", padx=5, pady=5)
-        self.message.pack(side=tk.TOP)
+        self.message = tk.Label(self.outer_frame, text="Input number by clicking and dragging", padx=5, pady=5)
+        self.message.pack(side=tk.BOTTOM)
 
         self.submit_button = tk.Button(self.outer_frame, text='Submit', command=lambda: self.submit(), width=10)
         self.submit_button.pack(side=tk.RIGHT, padx=25, pady=10)
@@ -75,7 +75,7 @@ class NumberGUI:
         if self.canvas.old_coords:
             x1, y1 = self.canvas.old_coords
             d = math.sqrt(((x - x1)**2) + ((y - y1)**2))
-            if d <= 40:
+            if d <= 20:
                 self.canvas.create_line(x, y, x1, y1, capstyle=tk.ROUND, width=10)
             else:
                 self.canvas.old_coords = None
@@ -105,15 +105,15 @@ class NumberGUI:
 class Plotter:
     def __init__(self, master):
         self.master = master
-        self.x = [0.1 for i in range(10)]
+        self.x = [0 for i in range(10)]
         self.y = [i for i in range(10)]
         self.fig = Figure(figsize=(3, 3))
         self.ax = self.fig.add_subplot(111)
-        self.ax.set(xlim=[0, 1], yticks=[i for i in range(10)])
+        self.ax.set(xlim=[0, 1], yticks=[i for i in range(10)], title='Predicted Probability')
         self.bar_plot = self.ax.barh(self.y, self.x)
         self.fig_canvas = FigureCanvasTkAgg(self.fig, master=master)
         self.fig_canvas.draw()
-        self.fig_canvas.get_tk_widget().pack()
+        self.fig_canvas.get_tk_widget().pack(pady=20)
 
     def update_plot(self, y):
 
@@ -125,7 +125,7 @@ class Plotter:
 
     def reset_plot(self):
 
-        y = [0.1 for i in range(10)]
+        y = [0 for i in range(10)]
 
         for bar, y_val in zip(self.bar_plot, y):
             bar.set_width(y_val)
